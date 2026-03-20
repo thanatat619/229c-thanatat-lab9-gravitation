@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 
 public class Gravitation : MonoBehaviour
 {
@@ -9,12 +11,28 @@ public class Gravitation : MonoBehaviour
     // List of attractable objects
     public static List<Gravitation> otherObjectList;
 
+    [SerializeField] bool planet = false;
+    [SerializeField] int orbitSpeed = 1000;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        if (otherObjectList == null) {otherObjectList = new List<Gravitation>();}
+        
+        if (otherObjectList == null)
+        {
+            otherObjectList = new List<Gravitation>();
+        }
+        
         otherObjectList.Add(this);
+
+
+        if (!planet)
+        { rb.AddForce(Vector3.left * orbitSpeed); }
+        
     }
+    
+    
+    
     private void FixedUpdate()
     {
         foreach (Gravitation obj in otherObjectList)
